@@ -1,0 +1,6 @@
+.TodoListItem {
+    padding: 10px;
+    line-height: 1.8;
+    box-shadow: 0px 0px 4px rgb(141, 140, 140);
+    margin: 1rem 0;
+}

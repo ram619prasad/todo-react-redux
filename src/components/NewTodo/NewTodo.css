@@ -1,0 +1,18 @@
+.NewTodo {
+    padding: 3rem;
+    box-shadow: 0px 0px 6px rgb(75, 70, 70);
+}
+
+.Input {
+    width: 60%;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+.Button {
+    margin-left: 1rem;
+    padding: 10px;
+    /* border: 1px solid red; */
+    border-radius: 5px;
+    font-size: 1rem;
+}
