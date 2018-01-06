@@ -2,20 +2,23 @@ import React, { Component  } from "react";
 import TodoListItem from '../../components/TodoListItem/TodoListItem';
 import Styles from './TodoList.css';
 import axios from 'axios';
+import Spinner from '../../components/UI/Spinner';
 
 export default class TodoList extends Component {
 
     state = {
         todos: [],
-        loading: true
+        errors: false
     };
 
     componentDidMount() {
         axios.get('https://react-burger-app-1c48d.firebaseio.com/todos.json')
             .then((res) => {
-                console.log('====================================');
-                console.log('success', res);
-                console.log('====================================');
+                let fetchedTodos = [];
+                for(let i in res.data) {
+                   fetchedTodos.push(res.data[i])
+                }
+                this.setState({ todos: this.state.todos.concat(fetchedTodos) })
             })
             .catch((err) => {
                 console.log('====================================');
@@ -25,18 +28,23 @@ export default class TodoList extends Component {
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <h1>Here are your todos...</h1>
-                <ul className={Styles.TodoList}>
-                    {this.state.todos.map((todo) => {
-                        return (
-                            // <TodoListItem todo={todo} key={todo.id} clicked={() => this.toggleTodo(todo.id)} />
-                            <TodoListItem todo={todo} key={todo.id} clicked={() => this.props.clicked(todo.id)} />
-                        )
-                    })}
-                </ul>
-            </React.Fragment>
-        );
+        let todos = <Spinner />
+        if(!this.state.errors) {
+            if(this.state.todos.length > 0) {
+                todos = (
+                    <React.Fragment>
+                        <h1>Here are your todos...</h1>
+                        <ul className={Styles.TodoList}>
+                            {this.state.todos.map((todo) => {
+                                return (
+                                    <TodoListItem body={todo.todo.body} completed={todo.todo.completed} key={todo.id} clicked={() => this.props.clicked(todo.id)} />
+                                )
+                            })}
+                        </ul>
+                    </React.Fragment>
+                );
+            }
+        }
+        return todos;
     };
 };
