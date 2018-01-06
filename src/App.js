@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Styles from './App.css';
 import NewTodo from './components/NewTodo/NewTodo';
 import TodoList from './containers/TodoList/TodoList';
+import Filters from './containers/Filters/Filters';
 
 class App extends Component {
 
@@ -44,6 +45,7 @@ class App extends Component {
     return (
       <div className={Styles.App}>
         <NewTodo handleFormSubmit={this.saveTodo}/>
+        <Filters filters={this.state.filters} />
         <TodoList todos={this.state.todos} clicked={this.toggleTodo} />
       </div>
     );
