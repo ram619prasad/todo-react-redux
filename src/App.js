@@ -3,16 +3,12 @@ import Styles from './App.css';
 import NewTodo from './components/NewTodo/NewTodo';
 import TodoList from './containers/TodoList/TodoList';
 import Filters from './containers/Filters/Filters';
+import { connect } from 'react-redux';
+import * as actions from './store/actions/todos/todos';
 
 class App extends Component {
 
   state = {
-    todos: [
-        { id: 1, body: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to', completed: false },
-        { id: 2, body: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.', completed: false },
-        { id: 3, body: 'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" ', completed: false },
-        { id: 4, body: ' All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words', completed: false },
-    ],
     filters: ['All', 'Completed', 'In Progress']
   };
 
@@ -35,8 +31,7 @@ class App extends Component {
 
     if(todoBody.trim().length > 0) {
       let newTodo = { id: id, body: todoBody, completed: false };
-      let newState = this.state.todos.concat(newTodo)
-      this.setState({todos: newState});
+      this.props.onFormSubmit(newTodo);
       form.elements.todo.value = '';      
     }
   }
@@ -52,4 +47,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onFormSubmit: (todoData) => dispatch(actions.createTodo(todoData))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(App);
