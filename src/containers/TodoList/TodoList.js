@@ -35,16 +35,24 @@ export default class TodoList extends Component {
                     <React.Fragment>
                         <h1>Here are your todos...</h1>
                         <ul className={Styles.TodoList}>
-                            {this.state.todos.map((todo) => {
-                                return (
-                                    <TodoListItem body={todo.todo.body} completed={todo.todo.completed} key={todo.id} clicked={() => this.props.clicked(todo.id)} />
-                                )
-                            })}
+                            {
+                                this.state.todos.map((todo) => {
+                                    return (
+                                        <TodoListItem 
+                                            body={todo.todo.body}
+                                            completed={todo.todo.completed}
+                                            key={todo.todo.id}
+                                            clicked={() => this.props.clicked(todo.id)}
+                                        />
+                                    );
+                                })
+                            }
                         </ul>
                     </React.Fragment>
                 );
-            }
-        }
+            };
+        };
+
         return todos;
     };
 };

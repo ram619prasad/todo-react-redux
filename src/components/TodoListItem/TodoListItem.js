@@ -2,10 +2,6 @@ import React from "react";
 import Styles from './TodoListItem.css'
 
 const TodoListItem = ({body, completed, clicked}) => {
-
-    console.log('====================================');
-    console.log('todo data', body, completed);
-    console.log('====================================');
     return (
         <li 
             className={Styles.TodoListItem}
