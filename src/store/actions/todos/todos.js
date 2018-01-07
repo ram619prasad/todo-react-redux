@@ -36,8 +36,22 @@ export const createTodoFail = (err) => {
     };
 };
 
+export const deleteTodoSuccess = (id) => {
+    return {
+        type: actionTypes.DELETE_TODO_SUCCESS,
+        id: id
+    };
+}
+
+export const deleteTodoFail = (err) => {
+    return {
+        type: actionTypes.DELETE_TODO_FAIL,
+        errors: err
+    };
+};
+
 export const createTodo = (todoData) => {
-    return (dispatch) => {
+    return async (dispatch) => {
         axios.post('https://react-burger-app-1c48d.firebaseio.com/todos.json', { todo: todoData })
             .then((res) => {
                 let newTodo = null;
@@ -45,7 +59,7 @@ export const createTodo = (todoData) => {
                 todoRef.child(res.data.name).on('value', dataSnapshot => {   
                     dataSnapshot.forEach(function(childSnapshot) {
                         newTodo = childSnapshot.val();
-                        newTodo['.key'] = childSnapshot.key;
+                        newTodo['key'] = res.data.name;
                     });
                     dispatch(createTodoSuccess(newTodo))
                 });
@@ -63,12 +77,53 @@ export const fetchTodos = () => {
         .then((res) => {
             let fetchedTodos = [];
             for(let i in res.data) {
-                fetchedTodos.push(res.data[i])
+                let todo = null;
+                todo = res.data[i].todo;
+                todo['key'] = i;
+                fetchedTodos.push(todo);
             }
             dispatch(fetchTodosSuccess(fetchedTodos))
         })
         .catch((err) => {
             dispatch(fetchTodosFail(err))
         });
+    }
+}
+
+export const deleteTodo = (id) => {
+    return async dispatch => {
+        try {
+            dispatch(deleteTodoSuccess(id))            
+            const response = await todoRef.child(id).remove();
+        } catch (err) {
+            dispatch(deleteTodoFail('Error while deleting todo.'));
+        }
+        
+    }
+}
+
+export const updateTodoSuccess = (id) => {
+    return {
+        type: actionTypes.UPDATE_TODO_SUCCESS,
+        id: id
+    };
+}
+
+export const updateTodoFail = (err) => {
+    return {
+        type: actionTypes.UPDATE_TODO_FAIL,
+        errors: err
+    };
+};
+
+export const updateTodo = (todo) => {
+    return dispatch => {
+        todoRef.child(todo.key).update({todo: {id: todo.id, body: todo.body, completed: !todo.completed, key: todo.key}})
+            .then((res) => {
+                dispatch(updateTodoSuccess(todo.key));
+            })
+            .catch((err) => {
+                dispatch(updateTodoFail('Error while updating todo.'));
+            })
     }
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import Styles from './FilterLink.css';
-// import Filters from '../../containers/Filters/Filters';
 
 
 const FilterLink = ({linkName}) => {

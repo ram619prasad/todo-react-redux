@@ -1,6 +1,20 @@
 .TodoListItem {
-    padding: 10px;
+    padding: 1.5rem;
     line-height: 1.8;
     box-shadow: 0px 0px 4px rgb(141, 140, 140);
     margin: 1rem 0;
+    position: relative;
+    cursor: pointer;
+}
+
+.TodoListRemove {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    color: red;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-shadow: 0px 0px 4px;
+    z-index: 10;
+    /* padding: 5px; */
 }
